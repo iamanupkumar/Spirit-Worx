@@ -1,5 +1,6 @@
 ﻿using Core.Abratractions;
 using Core.Entities;
+using Core.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,5 +37,15 @@ public class UserService
     public async Task<bool> UpdateUserAsync(Users users)
     {
         return await _userRepository.UpdateUserAsync(users);
+    }
+
+    public async Task<UserWithToken> LoginAsync(string emailId, string password)
+    {
+        var loginInfo = await _userRepository.LoginAsync(emailId,password);
+        if (loginInfo != null)
+        {
+            loginInfo.Token = CommonHelper.GenerateJwtToken(loginInfo.UserId);
+        }
+        return loginInfo;
     }
 }

@@ -15,5 +15,5 @@ public interface IUserRepository
     public Task<bool> UpdateUserAsync(Users model);
     public Task<IEnumerable<Users>> GetAllUsers();
     public Task<Users> GetUserById(int id);
-    public Task<Users> LoginAsync(Users model);
+    public Task<UserWithToken> LoginAsync(string emailId, string password);
 }

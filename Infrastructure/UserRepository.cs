@@ -44,9 +44,15 @@ public class UserRepository : IUserRepository
         return rowEffected;
     }
 
-    public Task<Users> LoginAsync(Users model)
+    public async Task<UserWithToken> LoginAsync(string emailId, string password)
     {
-        throw new NotImplementedException();
+        var SP = "usp_UserLogin";
+        var P = new DynamicParameters();
+        P.Add("@Email", emailId);
+        P.Add("@Password",password);
+        return await _db.Connection.
+            QueryFirstOrDefaultAsync<UserWithToken>
+            (SP, P, _db.Transaction, null, CommandType.StoredProcedure);
     }
 
     public async Task<bool> RegisterUserAsync(Users model)

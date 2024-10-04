@@ -50,7 +50,7 @@ namespace API.Controllers
         }
 
         [HttpDelete]
-        [Route("")]
+        [Route("DeleteUserAsync")]
         public async Task<IActionResult> DeleteUserAsync(int id)
         {
             var data = await _userService.DeleteUserAsync(id);

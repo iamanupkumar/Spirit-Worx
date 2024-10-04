@@ -71,4 +71,12 @@ public class Users : BaseAuditableEntity
     public Roles Role { get; set; }
 }
 
+public class UserWithToken
+{
+    public int UserId { get; set; }
+    public string Token { get; set; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
+}
+
 #endregion
