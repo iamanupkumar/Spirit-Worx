@@ -15,6 +15,6 @@ public static class DependencyInject
     public static void InjectCore(this IServiceCollection services)
     {
         services.AddScoped<UserService>();
-        //services.AddScoped<SiteRegistrationService>();
+        services.AddScoped<MainCategoryService>();
     }
 }

@@ -18,7 +18,7 @@ public static class DependencyInject
     {
         services.AddScoped<IDBSession, DBSession>();
         services.AddScoped<IUserRepository, UserRepository>();
-        //services.AddScoped<ISiteRegistrationRepository, SiteRegistrationRepository>();
+        services.AddScoped<IMainCategoryRepository, MainCategoryRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
     }
 }

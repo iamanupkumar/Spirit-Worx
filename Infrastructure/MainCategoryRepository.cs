@@ -1,7 +1,9 @@
 ﻿using Core.Abratractions;
 using Core.Entities;
+using Dapper;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,23 +18,45 @@ public class MainCategoryRepository : IMainCategoryRepository
     {
         _db = db;
     }
-    public Task<bool> CreateMainCategoryAsync(MainCatagory mainCatagory)
+    public async Task<bool> CreateMainCategoryAsync(MainCatagory mainCatagory)
     {
-        throw new NotImplementedException();
+        var SP = "usp_CreateMaincategory";
+        var P = new DynamicParameters();
+        P.Add("Name",mainCatagory.Name);
+        P.Add("IsActive", mainCatagory.IsActive);
+        var rowEffected = await _db.Connection.ExecuteAsync(SP,P,_db.Transaction,null,CommandType.StoredProcedure);
+        return rowEffected > 0;
     }
 
-    public Task<IEnumerable<MainCatagory>> GetAllMainCategory()
+    public async Task<bool> DeleteMainCategoryAsync(int id)
     {
-        throw new NotImplementedException();
+        var SP = "usp_DeleteMaincategory";
+        var rowEffected = await _db.Connection.ExecuteAsync(SP,new { @Id =  id },_db.Transaction,null,CommandType.StoredProcedure);
+        return rowEffected > 0;
+    }    
+
+    public async Task<IEnumerable<MainCatagory>> GetAllMainCategoryAsync()
+    {
+        var SP = "usp_GetAllMaincategory";
+        var rowEffected = await _db.Connection.QueryAsync<MainCatagory>(SP, null, _db.Transaction, null, CommandType.StoredProcedure);
+        return rowEffected;
+    }
+    
+    public async Task<MainCatagory> GetMainCatagoryByIdAsync(int id)
+    {
+        var SP = "usp_GetMaincategoryById";
+        var rowEffected = await _db.Connection.QueryFirstOrDefaultAsync<MainCatagory>(SP, new { Id = id }, null, null, CommandType.StoredProcedure);
+        return rowEffected;
     }
 
-    public Task<MainCatagory> GetMainCatagory(int id)
+    public async Task<bool> UpdateMainCategoryAsync(MainCatagory mainCatagory)
     {
-        throw new NotImplementedException();
-    }
-
-    public Task<bool> UpdateMainCategoryAsync(MainCatagory mainCatagory)
-    {
-        throw new NotImplementedException();
+        var SP = "usp_UpdateMaincategory";
+        var P = new DynamicParameters();
+        P.Add("Id", mainCatagory.Id);
+        P.Add("Name", mainCatagory.Name);
+        P.Add("IsActive", mainCatagory.IsActive);
+        var rowEffected = await _db.Connection.ExecuteAsync(SP, P, _db.Transaction, null, CommandType.StoredProcedure);
+        return rowEffected > 0;
     }
 }
